@@ -1,80 +1,60 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Stateful",
-      theme: ThemeData(primarySwatch: Colors.green),
-      home: Home(),
-    );
-  }
-}
-
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  String nome = "";
-
-  @override
-  void _showDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // retorna um objeto do tipo Dialog
-        return AlertDialog(
-          title: Text("Seu nome é "),
-          content: Text(nome),
-          actions: [
-            TextButton(
-                child: Text('Fechar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                })
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+void main() {
+  return runApp(
+    MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.blue,
         appBar: AppBar(
-          title: Text("Estudando Statefull"),
-          centerTitle: true,
+          title: Text('Dados'),
+          backgroundColor: Colors.blue,
         ),
-        body: Center(
-          child: Container(
-            width: 300,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextField(
-                  decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Insira seu nome"),
-                  onChanged: (String str) {
-                    setState(() {
-                      nome = str;
-                    });
-                  },
-                ),
-                TextButton(
-                    onPressed: () {
-                      _showDialog(context);
-                    },
-                    child: const Text("Clique aqui"))
-              ],
-            ),
+        body: _novaPaginaDados(),
+      ),
+    ),
+  );
+}
+
+class _novaPaginaDados extends StatefulWidget {
+
+  const _novaPaginaDados({Key? key}) : super(key:key);
+
+  @override
+  State<_novaPaginaDados> createState() => new __novaPaginaDadosState();
+}
+
+class __novaPaginaDadosState extends State<_novaPaginaDados> {
+  final _random = Random();
+  int next(int min, int max) => min + _random.nextInt(max - min);
+
+  int n1 = 1;
+  int n2 = 1;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Row(
+        children: <Widget>[
+          Expanded(child: FlatButton(
+            onPressed: (){
+              setState((){
+                n1 = next(1, 6);
+              });
+            },
+            child: Image.asset('images/dado$n1.png'),
           ),
-        ),
+          ),
+          Expanded(child: FlatButton(
+            onPressed: (){
+              setState((){
+                n2 = next(1, 6);
+              });
+            },
+            child: Image.asset('images/dado$n2.png'),
+          ),
+          ),
+        ],
       ),
     );
   }
